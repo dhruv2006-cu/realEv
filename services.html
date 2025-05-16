@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | Event-Mate</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --gray-color: #95a5a6;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --text-color: #333;
+            --text-light: #7f8c8d;
+            --white: #fff;
+            --black: #000;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--white);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav ul li a.active {
+            color: var(--primary-color);
+        }
+
+        nav ul li a.active:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .auth-buttons .btn {
+            margin-left: 10px;
+        }
+
+        /* Services Page Styles */
+        .services-page {
+            padding: 60px 0;
+        }
+
+        .services-page h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .services-page .subtitle {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text-light);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .service-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .service-card h3 {
+            padding: 20px 20px 10px;
+            color: var(--dark-color);
+        }
+
+        .service-card p {
+            padding: 0 20px 20px;
+            color: var(--text-light);
+        }
+
+        .service-card .btn {
+            margin: 0 20px 20px;
+        }
+
+        .service-request {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .service-request h2 {
+            margin-bottom: 15px;
+        }
+
+        .service-request p {
+            margin-bottom: 20px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .service-request .btn-primary {
+            background-color: var(--white);
+            color: var(--primary-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: var(--dark-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin: 20px 0;
+                justify-content: center;
+            }
+
+            .auth-buttons {
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav ul li {
+                margin-left: 0;
+            }
+
+            .auth-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .auth-buttons .btn {
+                margin-left: 0;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Event-Mate</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="services.html" class="active">Services</a></li>                   
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="chatbot.html">AI</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="UNSDG.html">Contact</a></li>
+                </ul>
+            </nav>
+            <!-- <div class="auth-buttons">
+                <a href="login.html" class="btn">Login</a>
+                <a href="register.html" class="btn btn-primary">Register</a>
+            </div> -->
+        </div>
+    </header>
+
+    <section class="services-page">
+        <div class="container">
+            <h1>Our Services</h1>
+            <p class="subtitle">Comprehensive event management solutions for the university community</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="Photos/eventplanning.jpg" alt="Event Planning">
+                    <h3>Event Planning</h3>
+                    <p>Full-service event planning from conception to execution, including venue selection, scheduling, and logistics.</p>
+                    <a href="#" class="btn" id="planning-btn">Learn More</a>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Registration">
+                    <h3>Registration Management</h3>
+                    <p>Customizable registration forms, ticketing, and attendee management for your events.</p>
+                    <a href="#" class="btn" id="registration-btn">Learn More</a>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Promotion">
+                    <h3>Event Promotion</h3>
+                    <p>Marketing and promotion services including email campaigns, social media, and campus advertising.</p>
+                    <a href="#" class="btn" id="promotion-btn">Learn More</a>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="AV Equipment">
+                    <h3>AV & Equipment Rental</h3>
+                    <p>High-quality audio-visual equipment and technical support for your events.</p>
+                    <a href="#" class="btn" id="equipment-btn">Learn More</a>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Catering">
+                    <h3>Catering Coordination</h3>
+                    <p>Food and beverage services through our approved university catering partners.</p>
+                    <a href="#" class="btn" id="catering-btn">Learn More</a>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Volunteers">
+                    <h3>Volunteer Management</h3>
+                    <p>Recruitment, scheduling, and management of event volunteers and staff.</p>
+                    <a href="#" class="btn" id="volunteer-btn">Learn More</a>
+                </div>
+            </div>
+
+            <div class="service-request">
+                <h2>Request Our Services</h2>
+                <p>Need help with your university event? Fill out our service request form and we'll get back to you within 24 hours.</p>
+                <button class="btn btn-primary" id="request-btn">Request Services</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Details Modal -->
+    <div id="service-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Service Details</h2>
+            <div id="modal-content">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Form Modal -->
+    <div id="request-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Service Request Form</h2>
+            <form id="service-form">
+                <div class="form-group">
+                    <label for="service-type">Service Needed</label>
+                    <select id="service-type" required>
+                        <option value="">Select a service</option>
+                        <option value="planning">Event Planning</option>
+                        <option value="registration">Registration Management</option>
+                        <option value="promotion">Event Promotion</option>
+                        <option value="equipment">AV & Equipment Rental</option>
+                        <option value="catering">Catering Coordination</option>
+                        <option value="volunteer">Volunteer Management</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone">
+                </div>
+                <div class="form-group">
+                    <label for="event-date">Event Date</label>
+                    <input type="date" id="event-date">
+                </div>
+                <div class="form-group">
+                    <label for="details">Additional Details</label>
+                    <textarea id="details"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Service details data
+            const services = {
+                planning: {
+                    title: "Event Planning",
+                    content: `
+                        <p>Our comprehensive event planning service includes:</p>
+                        <ul>
+                            <li>Concept development and theme creation</li>
+                            <li>Venue selection and booking</li>
+                            <li>Timeline and schedule management</li>
+                            <li>Budget planning and management</li>
+                            <li>Vendor coordination</li>
+                            <li>Day-of coordination</li>
+                        </ul>
+                        <p><strong>Pricing:</strong> Starting at $500 per event</p>
+                    `
+                },
+                registration: {
+                    title: "Registration Management",
+                    content: `
+                        <p>Streamline your event registration with:</p>
+                        <ul>
+                            <li>Custom online registration forms</li>
+                            <li>Ticket sales and management</li>
+                            <li>Attendee tracking and reporting</li>
+                            <li>Badge printing services</li>
+                            <li>On-site check-in solutions</li>
+                            <li>Payment processing</li>
+                        </ul>
+                        <p><strong>Pricing:</strong> $2 per registrant or $200 flat fee</p>
+                    `
+                },
+                promotion: {
+                    title: "Event Promotion",
+                    content: `
+                        <p>Get the word out with our promotion services:</p>
+                        <ul>
+                            <li>Email campaign design and execution</li>
+                            <li>Social media marketing</li>
+                            <li>Campus poster and flyer distribution</li>
+                            <li>Digital signage placement</li>
+                            <li>Press release writing and distribution</li>
+                            <li>Event listing on university calendars</li>
+                        </ul>
+                        <p><strong>Pricing:</strong> Packages starting at $300</p>
+                    `
+                },
+                equipment: {
+                    title: "AV & Equipment Rental",
+                    content: `
+                        <p>Available equipment includes:</p>
+                        <ul>
+                            <li>Projectors and screens</li>
+                            <li>Sound systems and microphones</li>
+                            <li>Lighting equipment</li>
+                            <li>Video recording gear</li>
+                            <li>Livestreaming setup</li>
+                            <li>Technical support staff</li>
+                        </ul>
+                        <p><strong>Pricing:</strong> $50-$200 per day depending on equipment</p>
+                    `
+                },
+                catering: {
+                    title: "Catering Coordination",
+                    content: `
+                        <p>Food service options:</p>
+                        <ul>
+                            <li>Full-service catering</li>
+                            <li>Buffet setup</li>
+                            <li>Boxed lunches</li>
+                            <li>Beverage service</li>
+                            <li>Special dietary accommodations</li>
+                            <li>Tableware and linen rentals</li>
+                        </ul>
+                        <p><strong>Pricing:</strong> Varies by menu selection</p>
+                    `
+                },
+                volunteer: {
+                    title: "Volunteer Management",
+                    content: `
+                        <p>We'll handle your volunteer needs:</p>
+                        <ul>
+                            <li>Volunteer recruitment</li>
+                            <li>Scheduling and shift management</li>
+                            <li>Training materials</li>
+                            <li>On-site supervision</li>
+                            <li>Recognition programs</li>
+                            <li>Tracking volunteer hours</li>
+                        </ul>
+                        <p><strong>Pricing:</strong> $150 flat fee plus $10 per volunteer</p>
+                    `
+                }
+            };
+
+            // Modal elements
+            const serviceModal = document.getElementById('service-modal');
+            const requestModal = document.getElementById('request-modal');
+            const closeButtons = document.querySelectorAll('.close-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+            const requestBtn = document.getElementById('request-btn');
+
+            // Service detail buttons
+            document.getElementById('planning-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                showServiceModal('planning');
+            });
+            document.getElementById('registration-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                showServiceModal('registration');
+            });
+            document.getElementById('promotion-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                showServiceModal('promotion');
+            });
+            document.getElementById('equipment-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                showServiceModal('equipment');
+            });
+            document.getElementById('catering-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                showServiceModal('catering');
+            });
+            document.getElementById('volunteer-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                showServiceModal('volunteer');
+            });
+
+            // Request service button
+            requestBtn.addEventListener('click', function() {
+                requestModal.style.display = 'block';
+            });
+
+            // Close modals
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    serviceModal.style.display = 'none';
+                    requestModal.style.display = 'none';
+                });
+            });
+
+            // Close when clicking outside modal
+            window.addEventListener('click', function(event) {
+                if (event.target === serviceModal) {
+                    serviceModal.style.display = 'none';
+                }
+                if (event.target === requestModal) {
+                    requestModal.style.display = 'none';
+                }
+            });
+
+            // Form submission
+            document.getElementById('service-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Thank you for your request! We will contact you within 24 hours.');
+                requestModal.style.display = 'none';
+                this.reset();
+            });
+
+            // Show service details modal
+            function showServiceModal(serviceId) {
+                const service = services[serviceId];
+                modalTitle.textContent = service.title;
+                modalContent.innerHTML = service.content;
+                serviceModal.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

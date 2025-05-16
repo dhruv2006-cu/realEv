@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alumni Meetup Registration</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #8e44ad;
+      margin-bottom: 20px;
+    }
+
+    form input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    form button {
+      background: #8e44ad;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .success {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Alumni Meetup 2025 Registration</h2>
+    <form id="alumniForm">
+      <input type="text" placeholder="Full Name" required />
+      <input type="email" placeholder="Email Address" required />
+      <input type="text" placeholder="Passing Year" required />
+      <input type="text" placeholder="Current Organization" required />
+      <button type="submit">Register</button>
+    </form>
+    <p id="confirmationMsg" class="success">✅ Registration Successful! PDF downloaded.</p>
+  </div>
+
+  <script>
+    document.getElementById("alumniForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const inputs = this.querySelectorAll("input");
+      const name = inputs[0].value;
+      const email = inputs[1].value;
+      const year = inputs[2].value;
+      const org = inputs[3].value;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(16);
+      doc.text("Chitkara Alumni Meetup 2025", 20, 30);
+      doc.setFontSize(12);
+      doc.text(`Thank you for registering, ${name}!`, 20, 45);
+      doc.text(`Email: ${email}`, 20, 60);
+      doc.text(`Passing Year: ${year}`, 20, 70);
+      doc.text(`Current Organization: ${org}`, 20, 80);
+      doc.text(`Registration Date: ${new Date().toLocaleDateString()}`, 20, 95);
+
+      doc.save(`Alumni_Registration_${name.replaceAll(" ", "_")}.pdf`);
+
+      document.getElementById("confirmationMsg").style.display = "block";
+      this.reset();
+    });
+  </script>
+</body>
+</html>

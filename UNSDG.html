@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDG Goals 8, 9 & 17</title>
+    <style>
+        :root {
+            --sdg8-color: #A21942;
+            --sdg9-color: #FD6925;
+            --sdg17-color: #19486A;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+        }
+        
+        header {
+            background: linear-gradient(white);
+            color: rgb(52, 152, 219);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .goal-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .goal-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .goal-header {
+            padding: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+        
+        .sdg8 {
+            background-color: var(--sdg8-color);
+        }
+        
+        .sdg9 {
+            background-color: var(--sdg9-color);
+        }
+        
+        .sdg17 {
+            background-color: var(--sdg17-color);
+        }
+        
+        .goal-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .goal-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .goal-body {
+            padding: 1.5rem;
+        }
+        
+        .goal-description {
+            margin-bottom: 1rem;
+        }
+        
+        .targets-list {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-container {
+            margin-top: 1.5rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .progress-sdg8 {
+            background-color: var(--sdg8-color);
+            width: 65%;
+        }
+        
+        .progress-sdg9 {
+            background-color: var(--sdg9-color);
+            width: 55%;
+        }
+        
+        .progress-sdg17 {
+            background-color: var(--sdg17-color);
+            width: 45%;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .interactive-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--sdg8-color);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-top: 1rem;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+        
+        .newsletter-form button {
+            padding: 0 1.5rem;
+            background-color: var(--sdg8-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .newsletter-form button:hover {
+            background-color: #8a1437;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .goals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-container {
+                flex-direction: column;
+                border-bottom: none;
+            }
+            
+            .tab {
+                border-bottom: 1px solid #ddd;
+                border-left: 3px solid transparent;
+            }
+            
+            .tab.active {
+                border-left-color: var(--sdg8-color);
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>UN Sustainable Development Goals</h1>
+        <div class="container">
+            <div class="logo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="chatbot.html">AI</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="UNSDG.html">UNSDG</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a ></a>
+                <a ></a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="goals-grid">
+            <!-- SDG 8 -->
+            <div class="goal-card">
+                <div class="goal-header sdg8">
+                    <div class="goal-number">8</div>
+                    <h2 class="goal-title">Decent Work and Economic Growth</h2>
+                </div>
+                <div class="goal-body">
+                    <p class="goal-description">Promote sustained, inclusive and sustainable economic growth, full and productive employment and decent work for all.</p>
+                    <h3>Key Targets:</h3>
+                    <ul class="targets-list">
+                        <li>Sustain per capita economic growth</li>
+                        <li>Achieve higher levels of economic productivity</li>
+                        <li>Promote youth employment and education</li>
+                        <li>Protect labor rights and promote safe working environments</li>
+                    </ul>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress progress-sdg8"></div>
+                        </div>
+                        <div class="progress-text">Global progress: 65% towards 2030 targets</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SDG 9 -->
+            <div class="goal-card">
+                <div class="goal-header sdg9">
+                    <div class="goal-number">9</div>
+                    <h2 class="goal-title">Industry, Innovation and Infrastructure</h2>
+                </div>
+                <div class="goal-body">
+                    <p class="goal-description">Build resilient infrastructure, promote inclusive and sustainable industrialization and foster innovation.</p>
+                    <h3>Key Targets:</h3>
+                    <ul class="targets-list">
+                        <li>Develop quality, reliable infrastructure</li>
+                        <li>Promote inclusive and sustainable industrialization</li>
+                        <li>Increase access to financial services and markets</li>
+                        <li>Enhance scientific research and technological capabilities</li>
+                    </ul>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress progress-sdg9"></div>
+                        </div>
+                        <div class="progress-text">Global progress: 55% towards 2030 targets</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SDG 17 -->
+            <div class="goal-card">
+                <div class="goal-header sdg17">
+                    <div class="goal-number">17</div>
+                    <h2 class="goal-title">Partnerships for the Goals</h2>
+                </div>
+                <div class="goal-body">
+                    <p class="goal-description">Strengthen the means of implementation and revitalize the global partnership for sustainable development.</p>
+                    <h3>Key Targets:</h3>
+                    <ul class="targets-list">
+                        <li>Strengthen domestic resource mobilization</li>
+                        <li>Enhance global macroeconomic stability</li>
+                        <li>Promote technology development and transfer</li>
+                        <li>Encourage effective public-private partnerships</li>
+                    </ul>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress progress-sdg17"></div>
+                        </div>
+                        <div class="progress-text">Global progress: 45% towards 2030 targets</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="interactive-section">
+            <h2>Explore How These Goals Connect</h2>
+            <div class="tab-container">
+                <div class="tab active" data-tab="connections">Goal Connections</div>
+                <div class="tab" data-tab="actions">Take Action</div>
+                <div class="tab" data-tab="resources">Resources</div>
+            </div>
+            
+            <div class="tab-content active" id="connections">
+                <p>The three goals are deeply interconnected. SDG 8 (Economic Growth) depends on SDG 9 (Innovation and Infrastructure) to create sustainable jobs and industries. Both require SDG 17 (Partnerships) to mobilize resources and share knowledge globally.</p>
+                <!-- <div id="connections-visualization" style="height: 200px; margin-top: 1rem; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center;">
+                    [Visualization of goal connections would appear here]
+                </div> -->
+            </div>
+            
+            <div class="tab-content" id="actions">
+                <h3>How You Can Contribute:</h3>
+                <ul class="targets-list">
+                    <li><strong>As an individual:</strong> Support ethical businesses, develop job skills, engage in local economic initiatives</li>
+                    <li><strong>As a business:</strong> Invest in sustainable infrastructure, create decent jobs, collaborate with partners</li>
+                    <li><strong>As a policymaker:</strong> Create enabling environments for innovation and fair economic growth</li>
+                </ul>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Stay updated - enter your email">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="resources">
+                <h3>Learn More:</h3>
+                <ul class="targets-list">
+                    <li><a href="https://sdgs.un.org/goals/goal8" target="_blank">UN SDG 8 Official Page</a></li>
+                    <li><a href="https://sdgs.un.org/goals/goal9" target="_blank">UN SDG 9 Official Page</a></li>
+                    <li><a href="https://sdgs.un.org/goals/goal17" target="_blank">UN SDG 17 Official Page</a></li>
+                    <li><a href="https://www.worldbank.org/en/topic/sdgs" target="_blank">World Bank SDG Resources</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- <footer>
+        <div class="footer-links">
+            <a href="https://www.un.org/sustainabledevelopment/" target="_blank">UN SDGs</a>
+            <a href="https://unstats.un.org/sdgs/report/2023/" target="_blank">2023 Progress Report</a>
+            <a href="https://www.undp.org/sustainable-development-goals" target="_blank">UNDP Resources</a>
+        </div>
+        <p>© 2023 Sustainable Development Goals Initiative. All data is based on UN statistics.</p>
+    </footer> -->
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Newsletter form submission
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const emailInput = this.querySelector('input');
+                    if (emailInput.value.includes('@')) {
+                        alert('Thank you for subscribing to SDG updates!');
+                        emailInput.value = '';
+                    } else {
+                        alert('Please enter a valid email address.');
+                    }
+                });
+            }
+            
+            // Animate progress bars on scroll
+            const progressBars = document.querySelectorAll('.progress');
+            
+            function animateProgressBars() {
+                progressBars.forEach(bar => {
+                    const rect = bar.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 100) {
+                        bar.style.width = bar.classList.contains('progress-sdg8') ? '65%' :
+                                          bar.classList.contains('progress-sdg9') ? '55%' : '45%';
+                    }
+                });
+            }
+            
+            // Initial check
+            animateProgressBars();
+            
+            // Check on scroll
+            window.addEventListener('scroll', animateProgressBars);
+        });
+    </script>
+</body>
+</html>

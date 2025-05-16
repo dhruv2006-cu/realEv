@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | Event-Mate</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --gray-color: #95a5a6;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --text-color: #333;
+            --text-light: #7f8c8d;
+            --white: #fff;
+            --black: #000;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--white);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav ul li a.active {
+            color: var(--primary-color);
+        }
+
+        nav ul li a.active:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .auth-buttons .btn {
+            margin-left: 10px;
+        }
+
+        /* Events Page Styles */
+        .events-page {
+            padding: 60px 0;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            color: var(--dark-color);
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-filter input,
+        .search-filter select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .events-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 8px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active:after {
+            content: '';
+            position: absolute;
+            bottom: -11px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .event-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .event-card .event-info {
+            padding: 20px;
+        }
+
+        .event-card h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .event-card .date-location {
+            margin-bottom: 15px;
+        }
+
+        .event-card .date-location span {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .event-card .date-location span:first-child {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .event-card .description {
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .event-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .category {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .category.academic {
+            background-color: #d6eaf8;
+            color: #2874a6;
+        }
+
+        .category.cultural {
+            background-color: #fadbd8;
+            color: #922b21;
+        }
+
+        .category.sports {
+            background-color: #d5f5e3;
+            color: #239b56;
+        }
+
+        .category.social {
+            background-color: #fdebd0;
+            color: #b7950b;
+        }
+
+        .seats {
+            color: var(--text-light);
+        }
+
+        .status.past {
+            color: var(--gray-color);
+            font-style: italic;
+        }
+
+        .no-events {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 40px 0;
+        }
+
+        /* Past Event Specific Styles */
+        #past-events .event-card .btn {
+            background-color: #f1f1f1;
+            color: var(--text-color);
+            border: 1px solid #ddd;
+        }
+
+        #past-events .event-card .btn:hover {
+            background-color: #e1e1e1;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin: 20px 0;
+                justify-content: center;
+            }
+
+            .auth-buttons {
+                margin-top: 20px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .search-filter {
+                width: 100%;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav ul li {
+                margin-left: 0;
+            }
+
+            .auth-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .auth-buttons .btn {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Event-Mate</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="events.html" class="active">Events</a></li>
+                    <li><a href="services.html">Services</a></li>                   
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="chatbot.html">AI</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="UNSDG.html">UNSDG</a></li>
+                </ul>
+            </nav>
+            <!-- <div class="auth-buttons">
+                <a href="login.html" class="btn">Login</a>
+                <a href="register.html" class="btn btn-primary">Register</a>
+            </div> -->
+        </div>
+    </header>
+
+    <section class="events-page">
+        <div class="container">
+            <div class="page-header">
+                <h1>University Events</h1>
+                <div class="search-filter">
+                    <input type="text" placeholder="Search events...">
+                    <select>
+                        <option value="">All Categories</option>
+                        <option value="academic">Academic</option>
+                        <option value="cultural">Cultural</option>
+                        <option value="sports">Sports</option>
+                        <option value="social">Social</option>
+                    </select>
+                    <button class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+
+            <div class="events-tabs">
+                <button class="tab-btn active" data-tab="upcoming">Upcoming</button>
+                <button class="tab-btn" data-tab="past">Past Events</button>
+                <button class="tab-btn" data-tab="my-events">My Events</button>
+            </div>
+
+            <div class="events-grid" id="upcoming-events">
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tech Fair">
+                    <div class="event-info">
+                        <h3>Annual Tech Fair</h3>
+                        <p class="date-location">
+                            <span>May 15, 2025</span>
+                            <span>New harmony Theatre</span>
+                        </p>
+                        <p class="description">Showcase of student projects and tech innovations from all departments.</p>
+                        <div class="event-meta">
+                            <span class="category academic">Academic</span>
+                            <span class="seats">120/150 seats</span>
+                        </div>
+                        <a href="registration.html" class="btn btn-primary">Register Now</a>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Cultural Fest">
+                    <div class="event-info">
+                        <h3>Cultural Festival</h3>
+                        <p class="date-location">
+                            <span>June 5, 2025</span>
+                            <span>Shroff Hall</span>
+                        </p>
+                        <p class="description">Celebrate diversity with performances, food, and traditions from around the world.</p>
+                        <div class="event-meta">
+                            <span class="category cultural">Cultural</span>
+                            <span class="seats">Open event</span>
+                        </div>
+                        <a href="culturalf.html" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Alumni Meet">
+                    <div class="event-info">
+                        <h3>Alumni Meetup</h3>
+                        <p class="date-location">
+                            <span>July 20, 2025</span>
+                            <span>New Harmony Theatre</span>
+                        </p>
+                        <p class="description">Network with successful alumni from various industries and career paths.</p>
+                        <div class="event-meta">
+                            <span class="category social">Social</span>
+                            <span class="seats">80/100 seats</span>
+                        </div>
+                        <a href="alumnim.html" class="btn btn-primary">Register Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="events-grid hidden" id="past-events">
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Science Expo">
+                    <div class="event-info">
+                        <h3>Science Expo 2024</h3>
+                        <p class="date-location">
+                            <span>November 15, 2024</span>
+                            <span>Science Building</span>
+                        </p>
+                        <p class="description">Annual showcase of scientific research and student projects from all departments.</p>
+                        <div class="event-meta">
+                            <span class="category academic">Academic</span>
+                            <span class="status past">450 attendees</span>
+                        </div>
+                        <a href="#" class="btn">View Photos</a>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Graduation">
+                    <div class="event-info">
+                        <h3>Spring Graduation 2024</h3>
+                        <p class="date-location">
+                            <span>April 28, 2024</span>
+                            <span>University Stadium</span>
+                        </p>
+                        <p class="description">Celebration of our graduating students' achievements with keynote speaker Dr. Elaine Smith.</p>
+                        <div class="event-meta">
+                            <span class="category academic">Academic</span>
+                            <span class="status past">1,200 attendees</span>
+                        </div>
+                        <a href="#" class="btn">View Photos</a>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Hackathon">
+                    <div class="event-info">
+                        <h3>Winter Hackathon 2024</h3>
+                        <p class="date-location">
+                            <span>December 10, 2024</span>
+                            <span>Computer Lab 3</span>
+                        </p>
+                        <p class="description">24-hour coding competition with prizes for most innovative projects.</p>
+                        <div class="event-meta">
+                            <span class="category academic">Academic</span>
+                            <span class="status past">25 teams</span>
+                        </div>
+                        <a href="#" class="btn">View Projects</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="events-grid hidden" id="my-events">
+                <div class="no-events">
+                    <p>You haven't registered for any events yet.</p>
+                    <a href="#" class="btn btn-primary">Browse Events</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            
+            if (tabButtons.length > 0) {
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // Remove active class from all buttons
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        
+                        // Add active class to clicked button
+                        this.classList.add('active');
+                        
+                        // Hide all content sections
+                        document.querySelectorAll('.events-grid').forEach(section => {
+                            section.classList.add('hidden');
+                        });
+                        
+                        // Show the selected content section
+                        const tabName = this.dataset.tab;
+                        document.getElementById(`${tabName}-events`).classList.remove('hidden');
+                    });
+                });
+            }
+
+            // Calculate and display "time ago" for past events
+            function updateEventDates() {
+                const pastEvents = document.querySelectorAll('#past-events .date-location span:first-child');
+                
+                pastEvents.forEach(dateElement => {
+                    const dateText = dateElement.textContent;
+                    const eventDate = new Date(dateText);
+                    const timeDiff = calculateTimeAgo(eventDate);
+                    
+                    if (!isNaN(eventDate.getTime())) {
+                        dateElement.textContent = `${dateText} (${timeDiff})`;
+                    }
+                });
+            }
+
+            function calculateTimeAgo(date) {
+                const now = new Date();
+                const diffInSeconds = Math.floor((now - date) / 1000);
+                
+                const intervals = {
+                    year: 31536000,
+                    month: 2592000,
+                    week: 604800,
+                    day: 86400,
+                    hour: 3600,
+                    minute: 60
+                };
+                
+                for (const [unit, seconds] of Object.entries(intervals)) {
+                    const interval = Math.floor(diffInSeconds / seconds);
+                    if (interval >= 1) {
+                        return interval === 1 ? `1 ${unit} ago` : `${interval} ${unit}s ago`;
+                    }
+                }
+                
+                return 'just now';
+            }
+
+            // Update past event dates if on events page
+            if (document.getElementById('past-events')) {
+                updateEventDates();
+            }
+        });
+    </script>
+</body>
+</html>

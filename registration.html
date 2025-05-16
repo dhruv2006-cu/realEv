@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration | Event-Mate</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --gray-color: #95a5a6;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --text-color: #333;
+            --text-light: #7f8c8d;
+            --white: #fff;
+            --black: #000;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--white);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--dark-color);
+            font-weight: 600;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav ul li a.active {
+            color: var(--primary-color);
+        }
+
+        nav ul li a.active:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .auth-buttons .btn {
+            margin-left: 10px;
+        }
+
+        /* Registration Page Styles */
+        .registration-page {
+            padding: 60px 0;
+            min-height: calc(100vh - 150px);
+            display: flex;
+            align-items: center;
+        }
+
+        .registration-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+        }
+
+        .registration-image {
+            flex: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .registration-image h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .registration-image p {
+            margin-bottom: 30px;
+        }
+
+        .registration-form {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .registration-form h2 {
+            color: var(--dark-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group .error {
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: var(--accent-color);
+        }
+
+        .form-group.error .error {
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .form-note {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Success Message */
+        .registration-success {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+
+        .registration-success h2 {
+            color: var(--success-color);
+            margin-bottom: 20px;
+        }
+
+        .registration-success p {
+            margin-bottom: 30px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin: 20px 0;
+                justify-content: center;
+            }
+
+            .auth-buttons {
+                margin-top: 20px;
+            }
+
+            .registration-container {
+                flex-direction: column;
+            }
+
+            .registration-image {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav ul li {
+                margin-left: 0;
+            }
+
+            .auth-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .auth-buttons .btn {
+                margin-left: 0;
+            }
+
+            .registration-form,
+            .registration-image {
+                padding: 30px 20px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Event-Mate</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="services.html">Services</a></li>                   
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="chatbot.html">AI</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="UNSDG.html">UNSDG</a></li>
+                </ul>
+            </nav>
+            <!-- <div class="auth-buttons">
+                <a href="login.html" class="btn">Login</a>
+                <a href="register.html" class="btn btn-primary">Register</a>
+            </div> -->
+        </div>
+    </header>
+
+    <section class="registration-page">
+        <div class="container">
+            <div class="registration-container">
+                <div class="registration-image">
+                    <h2>Register for Events 2025</h2>
+                    <p>Join us for the biggest technology conference of the year featuring industry leaders and innovative workshops.</p>
+                    <div>
+                        <p><strong>Location:</strong> University's Events</p>
+                        <p><strong>Price:</strong> Rs.4000 for students, Rs.40000 for professionals</p>
+                    </div>
+                </div>
+                
+                <div class="registration-form">
+                    <h2>Event Registration</h2>
+                    <form id="event-registration-form">
+                        <div class="form-group">
+                            <label for="full-name">Full Name</label>
+                            <input type="text" id="full-name" required>
+                            <span class="error">Please enter your full name</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" required>
+                            <span class="error">Please enter a valid email address</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone">
+                            <span class="error">Please enter a valid phone number</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="university">University/Organization</label>
+                            <input type="text" id="university" required>
+                            <span class="error">Please enter your university or organization</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="student-id">Student ID (if applicable)</label>
+                            <input type="text" id="student-id">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ticket-type">Ticket Type</label>
+                            <select id="ticket-type" required>
+                                <option value="">Select ticket type</option>
+                                <option value="student">Student - $99</option>
+                                <option value="professional">Professional - $199</option>
+                                <option value="speaker">Speaker (invite only)</option>
+                                <option value="sponsor">Sponsor</option>
+                            </select>
+                            <span class="error">Please select a ticket type</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dietary">Dietary Requirements</label>
+                            <select id="dietary">
+                                <option value="none">No special requirements</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                                <option value="gluten-free">Gluten Free</option>
+                                <option value="other">Other (please specify)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="dietary-other-group" style="display: none;">
+                            <label for="dietary-other">Please specify dietary requirements</label>
+                            <input type="text" id="dietary-other">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="accessibility">Accessibility Requirements</label>
+                            <textarea id="accessibility" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="workshops">Workshop Preferences (select up to 3)</label>
+                            <select id="workshops" multiple size="5">
+                                <option value="ai">Artificial Intelligence Fundamentals</option>
+                                <option value="web">Advanced Web Development</option>
+                                <option value="data">Data Science Workshop</option>
+                                <option value="cyber">Cybersecurity Best Practices</option>
+                                <option value="cloud">Cloud Computing Workshop</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms">I agree to the <a href="#">terms and conditions</a> and <a href="#">privacy policy</a></label>
+                            <span class="error">You must agree to the terms and conditions</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="checkbox" id="newsletter" checked>
+                            <label for="newsletter">Subscribe to our newsletter for event updates</label>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Complete Registration</button>
+                            <button type="button" class="btn" id="save-draft">Save for Later</button>
+                        </div>
+                        
+                        <p class="form-note">Your information will be used solely for event registration purposes.</p>
+                    </form>
+                    
+                    <div class="registration-success">
+                        <h2>Registration Successful!</h2>
+                        <p>Thank you for registering for Tech Conference 2023. A confirmation email has been sent to your email address.</p>
+                        <p>Your registration ID: <strong id="reg-id">TC2023-0000</strong></p>
+                        <a href="events.html" class="btn btn-primary">Browse More Events</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('event-registration-form');
+            const successSection = document.querySelector('.registration-success');
+            const dietarySelect = document.getElementById('dietary');
+            const dietaryOtherGroup = document.getElementById('dietary-other-group');
+            const saveDraftBtn = document.getElementById('save-draft');
+            
+            // Show/hide dietary other field
+            dietarySelect.addEventListener('change', function() {
+                dietaryOtherGroup.style.display = this.value === 'other' ? 'block' : 'none';
+            });
+            
+            // Save draft functionality
+            saveDraftBtn.addEventListener('click', function() {
+                const formData = getFormData();
+                localStorage.setItem('eventRegistrationDraft', JSON.stringify(formData));
+                alert('Your registration has been saved. You can complete it later.');
+            });
+            
+            // Check for saved draft
+            const savedDraft = localStorage.getItem('eventRegistrationDraft');
+            if (savedDraft) {
+                const draft = JSON.parse(savedDraft);
+                populateForm(draft);
+                
+                if (confirm('You have a saved registration draft. Would you like to continue with it?')) {
+                    // Draft loaded
+                } else {
+                    localStorage.removeItem('eventRegistrationDraft');
+                    form.reset();
+                }
+            }
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    const formData = getFormData();
+                    
+                    // In a real app, you would send this to your backend
+                    console.log('Form data:', formData);
+                    
+                    // Generate random registration ID
+                    const regId = 'TC2023-' + Math.floor(1000 + Math.random() * 9000);
+                    document.getElementById('reg-id').textContent = regId;
+                    
+                    // Show success message
+                    form.style.display = 'none';
+                    successSection.style.display = 'block';
+                    
+                    // Clear saved draft
+                    localStorage.removeItem('eventRegistrationDraft');
+                }
+            });
+            
+            // Form validation
+            function validateForm() {
+                let isValid = true;
+                const requiredFields = form.querySelectorAll('[required]');
+                
+                requiredFields.forEach(field => {
+                    const formGroup = field.closest('.form-group');
+                    
+                    if (!field.value) {
+                        formGroup.classList.add('error');
+                        isValid = false;
+                    } else {
+                        formGroup.classList.remove('error');
+                        
+                        // Additional validation for specific fields
+                        if (field.id === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value)) {
+                            formGroup.classList.add('error');
+                            formGroup.querySelector('.error').textContent = 'Please enter a valid email address';
+                            isValid = false;
+                        }
+                        
+                        if (field.id === 'phone' && field.value && !/^[\d\s\-()+]{10,}$/.test(field.value)) {
+                            formGroup.classList.add('error');
+                            formGroup.querySelector('.error').textContent = 'Please enter a valid phone number';
+                            isValid = false;
+                        }
+                    }
+                });
+                
+                // Validate workshop selections
+                const workshops = document.getElementById('workshops');
+                const selectedWorkshops = [...workshops.selectedOptions].map(opt => opt.value);
+                
+                if (selectedWorkshops.length > 3) {
+                    alert('Please select no more than 3 workshops');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            // Get form data as object
+            function getFormData() {
+                const workshops = document.getElementById('workshops');
+                const selectedWorkshops = [...workshops.selectedOptions].map(opt => opt.value);
+                
+                return {
+                    fullName: document.getElementById('full-name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    university: document.getElementById('university').value,
+                    studentId: document.getElementById('student-id').value,
+                    ticketType: document.getElementById('ticket-type').value,
+                    dietary: document.getElementById('dietary').value,
+                    dietaryOther: document.getElementById('dietary-other').value,
+                    accessibility: document.getElementById('accessibility').value,
+                    workshops: selectedWorkshops,
+                    agreeTerms: document.getElementById('terms').checked,
+                    newsletter: document.getElementById('newsletter').checked
+                };
+            }
+            
+            // Populate form with saved data
+            function populateForm(data) {
+                document.getElementById('full-name').value = data.fullName || '';
+                document.getElementById('email').value = data.email || '';
+                document.getElementById('phone').value = data.phone || '';
+                document.getElementById('university').value = data.university || '';
+                document.getElementById('student-id').value = data.studentId || '';
+                document.getElementById('ticket-type').value = data.ticketType || '';
+                document.getElementById('dietary').value = data.dietary || 'none';
+                document.getElementById('dietary-other').value = data.dietaryOther || '';
+                document.getElementById('accessibility').value = data.accessibility || '';
+                document.getElementById('terms').checked = data.agreeTerms || false;
+                document.getElementById('newsletter').checked = data.newsletter !== false;
+                
+                // Handle workshops
+                if (data.workshops) {
+                    const workshopSelect = document.getElementById('workshops');
+                    [...workshopSelect.options].forEach(option => {
+                        option.selected = data.workshops.includes(option.value);
+                    });
+                }
+                
+                // Show/hide dietary other field
+                dietaryOtherGroup.style.display = data.dietary === 'other' ? 'block' : 'none';
+            }
+        });
+    </script>
+</body>
+</html>
